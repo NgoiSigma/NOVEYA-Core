@@ -1,0 +1,34 @@
+project:
+  name: Σ-FDL::MetaCore
+  version: 1.0.0
+  license: Apache-2.0
+  created: 2025-06
+  description: >
+    Resonant framework combining formally-dialectical logic (FDL), semantic architecture (SVET),
+    cognitive agents, and ethical resonance systems for AI governance and social infrastructure.
+
+structure:
+  sigma_avatarus/: "Semantic avatar and SVET-shell engine"
+  fdl_agent_kernel/: "Core FDL logic module"
+  fdl_codeagents/: "Token-optimized API agent logic"
+  modules:
+    Δψ_monitor/: "Lie tension seismograph module"
+    techno_passport/: "Ontological passport and GPT identity"
+    gromada_sdk/: "Governance SDK for NOVEYA-based communities"
+  interfaces:
+    telegram_bot/: "Civic dialogue deployment"
+    streamlit_ui/: "Resonant visualization layer"
+    cli_core/: "Command-line diagnostics"
+
+entrypoints:
+  cli: cli_core/cli_main.py
+  streamlit: streamlit_ui/dashboard.py
+  telegram: telegram_bot/bot_main.py
+
+dependencies:
+  - openai>=1.3.0
+  - streamlit>=1.34.0
+  - python-telegram-bot>=20.0
+  - rich>=13.0.0
+  - typer>=0.9.0
+  - python-dotenv>=1.0.0
