@@ -1,0 +1,90 @@
+{
+  "name": "NOVEYA Automation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "workspace": "YOUR_WORKSPACE_ID",
+        "resource": "task",
+        "event": "created",
+        "filters": {
+          "tags": ["NebiUla_Init"]
+        }
+      },
+      "name": "Asana Trigger",
+      "type": "n8n-nodes-base.asanaTrigger",
+      "typeVersion": 1,
+      "position": [250, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  const task = item.json;\n  const name = task.name || '';\n  // Ожидаем, что имя начинается с [01], [02] и т.п.\n  const prefix = name.substring(1, 3);\n  let sectorFolder = '';\n  switch (prefix) {\n    case '01': sectorFolder = '01_Governance'; break;\n    case '02': sectorFolder = '02_Energy'; break;\n    case '03': sectorFolder = '03_Ecology'; break;\n    case '04': sectorFolder = '04_Science'; break;\n    case '05': sectorFolder = '05_Economy'; break;\n    case '06': sectorFolder = '06_Security'; break;\n    case '07': sectorFolder = '07_Culture'; break;\n    case '08': sectorFolder = '08_Urban'; break;\n    default: sectorFolder = 'Unsorted';\n  }\n  return { json: { name: task.name, notes: task.notes, sectorFolder } };\n});"
+      },
+      "name": "Determine Sector",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 200]
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "teamDrive": false,
+        "parents": [
+          "={{ $env.METATRON_DRIVE_ROOT_ID }}"
+        ],
+        "name": "={{ $json.name }}.txt",
+        "binaryData": false,
+        "fileContent": "={{ $json.notes }}",
+        "options": {
+          "folderName": "={{ $json.sectorFolder }}"
+        }
+      },
+      "name": "Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 1,
+      "position": [650, 100]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "repository": "NgoiSigma/NOVEYA-Core",
+        "branch": "main",
+        "filePath": "={{ `docs/${$json.sectorFolder}/${$json.name}.md` }}",
+        "fileContent": "={{ $json.notes }}",
+        "commitMessage": "Automated import of Asana task via n8n"
+      },
+      "name": "GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Asana Trigger": {
+      "main": [
+        [
+          {
+            "node": "Determine Sector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Determine Sector": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

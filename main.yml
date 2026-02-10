@@ -1,0 +1,35 @@
+name: Metatron Continuous Integration
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - "README.md"
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+
+      - name: Run FDL linter
+        env:
+          ASANA_PAT: ${{ secrets.ASANA_PAT }}
+        run: |
+          # Предполагается, что скрипт scripts/fdl_linter.py анализирует содержимое репозитория
+          # и проверяет логические противоречия (частотный шум) в документах.
+          if [ -f scripts/fdl_linter.py ]; then
+            python scripts/fdl_linter.py
+          else
+            echo "FDL linter script not found; skipping"
+          fi
