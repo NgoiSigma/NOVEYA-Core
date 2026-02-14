@@ -1,0 +1,39 @@
+{
+  "system_dna": "NOVEYA-CORE-02-2026",
+  "node": "Mykolaiv-South-Hub",
+  "fdl_governance": {
+    "protocol": "Nebi-Ula",
+    "theses_count": 12,
+    "normalization_principle": "Forgiveness = Zero Discreteness"
+  },
+  "utility_logic_2017_2018": {
+    "basis": "Constitutional_Court_Challenge",
+    "parasite_removal": true,
+    "direct_contract_model": {
+      "transparency_level": "absolute",
+      "middleman_cut": 0.0,
+      "community_control": "real-time-kpi"
+    },
+    "kpi_metrics": [
+      {
+        "id": "energy_res",
+        "label": "Energy Resonance",
+        "unit": "percent"
+      },
+      {
+        "id": "water_purity",
+        "label": "Biological Norm",
+        "unit": "ppm"
+      },
+      {
+        "id": "social_synergy",
+        "label": "Community Feedback",
+        "unit": "resonance_index"
+      }
+    ]
+  },
+  "deployment_trigger": {
+    "phase_0_stop": "2026-02-17T00:00:00Z",
+    "phase_2_start": "2026-02-21T12:00:00Z"
+  }
+}
